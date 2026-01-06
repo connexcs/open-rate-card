@@ -1,0 +1,102 @@
+name: Schema Validation
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  workflow_dispatch:
+
+jobs:
+  validate:
+    name: Validate JSON Schema and Examples
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Install validation tools
+        run: |
+          npm install -g ajv-cli ajv-formats
+          echo "✅ Installed ajv-cli and ajv-formats"
+      
+      - name: Validate schema is valid JSON Schema
+        run: |
+          echo "🔍 Validating that schema/open-rate-card.schema.json is a valid JSON Schema..."
+          ajv compile -s schema/open-rate-card.schema.json --strict=false
+          echo "✅ Schema is valid JSON Schema (draft 2020-12)"
+      
+      - name: Validate example.json against schema
+        run: |
+          echo "🔍 Validating example.json against schema..."
+          ajv validate -s schema/open-rate-card.schema.json -d example.json --strict=false --verbose
+          echo "✅ example.json validates successfully"
+      
+      - name: Check for additional JSON files
+        id: check_files
+        run: |
+          echo "🔍 Checking for additional JSON files to validate..."
+          if ls *.json 1> /dev/null 2>&1; then
+            echo "files_exist=true" >> $GITHUB_OUTPUT
+            echo "📄 Found JSON files to validate"
+          else
+            echo "files_exist=false" >> $GITHUB_OUTPUT
+            echo "ℹ️  No additional JSON files found"
+          fi
+      
+      - name: Validate all JSON files
+        if: steps.check_files.outputs.files_exist == 'true'
+        run: |
+          echo "🔍 Validating all JSON files in repository..."
+          EXIT_CODE=0
+          for file in *.json; do
+            if [ "$file" != "additional.json" ]; then
+              echo "Validating $file..."
+              if ajv validate -s schema/open-rate-card.schema.json -d "$file" --strict=false 2>&1; then
+                echo "✅ $file is valid"
+              else
+                echo "❌ $file validation failed"
+                EXIT_CODE=1
+              fi
+            else
+              echo "⏭️  Skipping $file (not a complete document)"
+            fi
+          done
+          exit $EXIT_CODE
+      
+      - name: Validation Summary
+        if: success()
+        run: |
+          echo "================================"
+          echo "✅ All validations passed!"
+          echo "================================"
+          echo ""
+          echo "Schema: Valid JSON Schema (draft 2020-12)"
+          echo "example.json: Valid rate card document"
+          echo ""
+          echo "The Open Rate Card specification is valid and ready to use."
+      
+      - name: Validation Failed
+        if: failure()
+        run: |
+          echo "================================"
+          echo "❌ Validation failed"
+          echo "================================"
+          echo ""
+          echo "Please review the errors above and fix the issues."
+          echo ""
+          echo "Common issues:"
+          echo "- Missing required fields: name, schema_version, version, date, cards"
+          echo "- Missing required card fields: name, type, currency, endpoint"
+          echo "- Invalid enum values"
+          echo "- Type mismatches (string vs number)"
+          echo ""
+          echo "See README.md for validation instructions and examples."
+          exit 1
