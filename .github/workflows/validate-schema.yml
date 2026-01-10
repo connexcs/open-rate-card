@@ -30,13 +30,13 @@ jobs:
       - name: Validate schema is valid JSON Schema
         run: |
           echo "🔍 Validating that schema/open-rate-card.schema.json is a valid JSON Schema..."
-          ajv compile -s schema/open-rate-card.schema.json --strict=false
-          echo "✅ Schema is valid JSON Schema (draft 2020-12)"
+          ajv compile -s schema/open-rate-card.schema.json --strict=false -c ajv-formats
+          echo "✅ Schema is valid JSON Schema (draft-07)"
       
       - name: Validate example.json against schema
         run: |
           echo "🔍 Validating example.json against schema..."
-          ajv validate -s schema/open-rate-card.schema.json -d example.json --strict=false --verbose
+          ajv validate -s schema/open-rate-card.schema.json -d example.json --strict=false --verbose -c ajv-formats
           echo "✅ example.json validates successfully"
       
       - name: Check for additional JSON files
@@ -59,7 +59,7 @@ jobs:
           for file in *.json; do
             if [ "$file" != "additional.json" ]; then
               echo "Validating $file..."
-              if ajv validate -s schema/open-rate-card.schema.json -d "$file" --strict=false 2>&1; then
+              if ajv validate -s schema/open-rate-card.schema.json -d "$file" --strict=false -c ajv-formats 2>&1; then
                 echo "✅ $file is valid"
               else
                 echo "❌ $file validation failed"
@@ -78,7 +78,7 @@ jobs:
           echo "✅ All validations passed!"
           echo "================================"
           echo ""
-          echo "Schema: Valid JSON Schema (draft 2020-12)"
+          echo "Schema: Valid JSON Schema (draft-07)"
           echo "example.json: Valid rate card document"
           echo ""
           echo "The Open Rate Card specification is valid and ready to use."

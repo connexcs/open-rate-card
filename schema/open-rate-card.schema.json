@@ -1,5 +1,5 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://github.com/connexcs/open-rate-card/schema/v1.0.0",
   "title": "Open Rate Card Specification",
   "description": "A standardized JSON format for telecommunications rate cards, enabling automated exchange of pricing, routing, and service information between VoIP carriers and wholesale providers.",
