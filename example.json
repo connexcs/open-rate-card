@@ -1,4 +1,56 @@
+## Here is the **list of changes**:
 
+---
+
+A. 🔧 Structural / Conceptual Changes
+
+1. **Changed document intent from “rate card only” to “interconnect”**:
+
+   * Updated the `name` field to reflect "Interconnect" instead of just "Rate Card".
+2. **Externalized rate data**:
+
+   * Removed the embedded `rates` array and added a reference to an external rate card URI.
+
+---
+
+B. 🔐 Integrity & Security Additions
+
+1. **Added rate card checksum**:
+
+   * Introduced a checksum field for the external rate card URI to ensure data integrity.
+
+2. **Added document-level checksum**:
+
+   * Added a checksum field to the `metadata` section to verify the integrity of the entire document.
+
+3. **Added digital signature**:
+
+   * Introduced a signature field in `metadata` to verify the authenticity of the checksum.
+
+4. **Explicitly declared canonical JSON**:
+
+   * Added a `canonicalization` field to ensure that JSON is serialized in a standardized way before checksum and signature calculation.
+
+---
+
+C. 🧩 Field Adjustments (Non-breaking)
+
+1. **Updated description text**:
+
+   * Clarified the service type from "rate card" to "interconnect" to better represent the purpose of the document.
+
+2. **Left all existing technical, legal, endpoint, SLA, codec, and customer fields unchanged**:
+
+   * No changes to core technical or legal fields.
+
+---
+
+❌ Things Intentionally NOT Changed
+
+* No real checksum or signature values were calculated.
+* No changes to schema rules.
+* No public key or certificate management fields added.
+* No changes to endpoint or codec configuration.
 {
   "name": "ABC Telecom Interconnect",
   "description": "ABC Telecom provides international voice termination services.",
@@ -169,57 +221,3 @@
     "notes": "Initial signed interconnect release"
   }
 }
-
-Here is the **list of changes**:
-
----
-
-A. 🔧 Structural / Conceptual Changes
-
-1. **Changed document intent from “rate card only” to “interconnect”**:
-
-   * Updated the `name` field to reflect "Interconnect" instead of just "Rate Card".
-2. **Externalized rate data**:
-
-   * Removed the embedded `rates` array and added a reference to an external rate card URI.
-
----
-
-B. 🔐 Integrity & Security Additions
-
-1. **Added rate card checksum**:
-
-   * Introduced a checksum field for the external rate card URI to ensure data integrity.
-
-2. **Added document-level checksum**:
-
-   * Added a checksum field to the `metadata` section to verify the integrity of the entire document.
-
-3. **Added digital signature**:
-
-   * Introduced a signature field in `metadata` to verify the authenticity of the checksum.
-
-4. **Explicitly declared canonical JSON**:
-
-   * Added a `canonicalization` field to ensure that JSON is serialized in a standardized way before checksum and signature calculation.
-
----
-
-C. 🧩 Field Adjustments (Non-breaking)
-
-1. **Updated description text**:
-
-   * Clarified the service type from "rate card" to "interconnect" to better represent the purpose of the document.
-
-2. **Left all existing technical, legal, endpoint, SLA, codec, and customer fields unchanged**:
-
-   * No changes to core technical or legal fields.
-
----
-
-❌ Things Intentionally NOT Changed
-
-* No real checksum or signature values were calculated.
-* No changes to schema rules.
-* No public key or certificate management fields added.
-* No changes to endpoint or codec configuration.
