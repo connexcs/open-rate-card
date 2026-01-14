@@ -3,17 +3,40 @@
 [![Schema Validation](https://github.com/connexcs/interconnect-made-easy/workflows/Schema%20Validation/badge.svg)](https://github.com/connexcs/interconnect-made-easy/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-An open, standardized JSON format for telecommunications rate cards, enabling automated exchange of pricing, routing, and service information between VoIP carriers, wholesale providers, and system integrators.
+An open, standardized JSON specification for telecommunications interconnect information exchange, covering rate cards, routing constraints, service requirements, and technical interconnect metadata between VoIP carriers, wholesale providers, and system integrators.
 
 ## 🎯 Purpose
 
-The Interconnect Made Easy specification eliminates the inefficiencies of PDF and Excel-based rate cards by providing:
+The Interconnect Made Easy specification defines a **standardised, machine-readable interface for exchanging telecom interconnect information**.
 
-- **Standardization**: A common format that all systems can parse and validate
-- **Automation**: Enable programmatic rate card ingestion and comparison
-- **Interoperability**: Seamless integration between carriers, billing platforms, and routing systems
-- **Version Control**: Built-in versioning and effective date management
-- **Extensibility**: Forward-compatible design allowing custom fields without breaking parsers
+Today, interconnect data is exchanged inconsistently via:
+
+- Emails with attached Excel / CSV files  
+- Ad-hoc rate decks with undocumented assumptions  
+- Separate and incomplete “interconnect guides”  
+- Vendor- or platform-specific formats with no common structure  
+
+There is **no standard way** to exchange:
+
+- Who the provider is  
+- What traffic is allowed  
+- What technical endpoint should be used  
+- What quality, compliance, or routing constraints apply  
+- How rate information relates to the interconnect itself  
+
+This specification addresses that gap by defining a **single, structured format** for interconnect information exchange.
+
+### Specifically, it provides:
+
+- **Standardization**: A consistent schema for interconnect and rate data  
+- **Information completeness**: Rate, routing, quality, and endpoint context in one structure  
+- **Automation**: Enable systems to ingest, validate, and process interconnect data programmatically  
+- **Interoperability**: Remove vendor-specific formats and assumptions  
+- **Version Control**: Explicit schema and document versioning  
+- **Extensibility**: Forward-compatible design allowing additional fields without breaking parsers  
+
+> **Note:** This specification focuses on *information exchange*, not on how individual platforms configure SIP trunks or switches internally.
+
 
 ## 🚀 Quick Start
 
@@ -36,6 +59,35 @@ The Interconnect Made Easy specification eliminates the inefficiencies of PDF an
 }
 ```
 
+This represents the **minimum viable interconnect definition**:
+
++ Identifies the provider
++ Declares schema compatibility
++ Defines at least one interconnect card
++ References a technical endpoint
+
+### 🔗 Rate Card Location (Inline or External)
+
+Rate information may be **embedded directly **in the document or **referenced externally**.
+
+This enables:
+
++ Hosting large rate decks separately
++ Updating rates without changing interconnect metadata
++ API- or CDN-based rate distribution
+
+**Example (conceptual):**
+
+```js
+"rate_card": {
+  "uri": "https://rates.provider.example/termination/us.json",
+  "format": "json",
+  "checksum": "sha256:abc123..."
+}
+```
+
+The interconnect document remains the **authoritative context**, while rate data may evolve independently.
+
 ### Validation
 
 #### Using ajv-cli (Command Line)
@@ -47,6 +99,9 @@ npm install -g ajv-cli ajv-formats
 # Validate your rate card
 ajv validate -s schema/interconnect-made-easy.schema.json -d your-rate-card.json --strict=false
 ```
+
+--strict=false is recommended during schema evolution.
+Production implementations may enable strict mode.
 
 #### Using Online Validators
 
@@ -114,10 +169,13 @@ Error: data/cards/default must have required property 'endpoint'
 
 ### Core Documentation
 
-- **[SPECIFICATION.md](SPECIFICATION.md)** - Complete field reference with all 15 top-level sections
-- **[CARD-TYPES.md](CARD-TYPES.md)** - Detailed guide to termination, origination, and messaging cards
-- **[GLOSSARY.md](GLOSSARY.md)** - Telecommunications terminology reference (ACD, ASR, NER, STIR/SHAKEN, etc.)
-- **[VERSIONING.md](VERSIONING.md)** - Schema evolution strategy and backward compatibility guidelines
+- **[SPECIFICATION.md](SPECIFICATION.md)** - Normative schema and field definitions
+- **[CARD-TYPES.md](CARD-TYPES.md)** - Termination, origination, messaging, and future card types
+- **[GLOSSARY.md](GLOSSARY.md)** - Telecommunications terminology reference
+- **[VERSIONING.md](VERSIONING.md)** - Schema evolution and compatibility rules
+
+### Schema
+- **schema/interconnect-made-easy.schema.json** – JSON Schema definition
 
 ### Contributing
 
@@ -156,18 +214,42 @@ interconnect-made-easy/
 
 ### Document Level (5 required fields)
 
-- `name` - Rate card or provider name
+- `name` - Interconnect or provider identifier
 - `schema_version` - Interconnect Made Easy specification version (semantic versioning)
-- `version` - Rate card document version
-- `date` - Creation date (YYYY-MM-DD)
-- `cards` - At least one rate card
+- `version` - Interconnect document revision
+- `date` - Publication or effective date
+- `cards` - One or more interconnect cards
 
 ### Card Level (4 required fields per card)
 
-- `name` - Card name
-- `type` - Card type (termination, origination, messaging, etc.)
+- `name` - Card identifier
+- `type` - Interconnect type (termination, origination, messaging, etc.)
 - `currency` - ISO 4217 currency code (e.g., USD, EUR, GBP)
-- `endpoint` - Reference to an endpoint name
+- `endpoint` - Reference to a technical endpoint
+
+### 🔄 Forward Compatibility
+
++ Additional fields are permitted at all levels
++ Parsers must ignore unknown fields
++ Existing fields are never removed, only deprecated
++ Schema evolution is explicit and versioned
+
+This ensures long-term interoperability across carriers and platforms.
+
+## 💡 What This Specification Is (and Is Not)
+
+**This is**:
+
++ A standard interface for exchanging interconnect information
++ A machine-readable replacement for ad-hoc interconnect documents
++ A neutral, vendor-agnostic schema
+
+**This is not**:
+
++ A SIP configuration guide
++ A switch provisioning manual
++ A billing engine definition
++ A routing algorithm specification
 
 ## 🌐 Target Audience
 
@@ -176,17 +258,6 @@ interconnect-made-easy/
 - **System Integrators** - Building billing and routing platforms
 - **Rate Deck Management Systems** - Automated rate comparison and ingestion
 - **Network Operations** - Traffic routing and quality management
-
-## 🔄 Forward Compatibility
-
-This specification is designed as an **evolving minimum requirement**:
-
-- ✅ **Additional properties are allowed** - Add custom fields to any section without breaking validation
-- ✅ **Parsers must ignore unknown fields** - Gracefully handle extensions they don't recognize
-- ✅ **No breaking changes to existing fields** - Fields are never removed, only deprecated
-- ✅ **Community-driven evolution** - Propose extensions via [GitHub Issues](https://github.com/connexcs/interconnect-made-easy/issues)
-
-The fields documented in this specification represent the **minimum standard** for interoperability. Implementations can extend any section with additional fields relevant to their use case, ensuring the specification grows with industry needs while maintaining backward compatibility.
 
 ## 💡 Key Features
 
@@ -250,7 +321,7 @@ Copyright © 2026 Connex Carrier Services
 ## 📊 Version
 
 - **Current Schema Version**: 1.0.0
-- **Last Updated**: January 3, 2026
+- **Last Updated**: January 14, 2026
 
 ---
 
