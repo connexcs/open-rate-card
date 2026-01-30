@@ -1,7 +1,7 @@
 # Interconnect Made Easy Specification
 
 Version: 1.0.0  
-Last Updated: January 3, 2026
+Last Updated: January 30, 2026
 
 This document provides a complete field-by-field reference for the Interconnect Made Easy specification. All fields are **optional** unless explicitly marked as **required**.
 
