@@ -475,6 +475,85 @@ Brief definitions of key telecommunications terms. For comprehensive definitions
 
 ---
 
+## Required vs Optional Fields
+
+| Field Name       | Required / Optional |
+| ---------------- | ------------------- |
+| `name`           | Required            |
+| `schema_version` | Required            |
+| `version`        | Required            |
+| `date`           | Required            |
+| `cards`          | Required            |
+| `description`    | Optional            |
+| `author`         | Optional            |
+| `website`        | Optional            |
+| `email`          | Optional            |
+| `technical`      | Optional            |
+| `noc`            | Optional            |
+| `billing`        | Optional            |
+| `phone`          | Optional            |
+| `effective_date` | Optional            |
+| `expiry_date`    | Optional            |
+| `timezone`       | Optional            |
+| `legal`          | Optional            |
+| `endpoints`      | Optional            |
+| `customer`       | Optional            |
+| `metadata`       | Optional            |
+
+---
+
+### Cards Object (per card)
+
+| Field Name      | Required / Optional |
+| --------------- | ------------------- |
+| `name`          | Required            |
+| `type`          | Required            |
+| `currency`      | Required            |
+| `endpoint`      | Required            |
+| `description`   | Optional            |
+| `direction`     | Optional            |
+| `traffic_type`  | Optional            |
+| `service_type`  | Optional            |
+| `tech_prefix`   | Optional            |
+| `fields`        | Optional            |
+| `rates`         | Optional            |
+| `rate_card`     | Optional            |
+| `rate`          | Optional            |
+| `charge`        | Optional            |
+| `criteria`      | Optional            |
+| `performance`   | Optional            |
+| `codecs`        | Optional            |
+| `number_format` | Optional            |
+
+---
+
+### Endpoint Object
+
+| Field Name  | Required / Optional |
+| ----------- | ------------------- |
+| `protocol`  | Required            |
+| `transport` | Required            |
+| `host`      | Required            |
+| `port`      | Required            |
+| `username`  | Optional            |
+| `password`  | Optional            |
+| `priority`  | Optional            |
+
+---
+
+### Metadata Object
+
+| Field Name   | Required / Optional |
+| ------------ | ------------------- |
+| `created_at` | Optional            |
+| `updated_at` | Optional            |
+| `created_by` | Optional            |
+| `checksum`   | Optional            |
+| `signature`  | Optional            |
+| `notes`      | Optional            |
+
+---
+
 ## Additional Properties
 
 The Interconnect Made Easy specification uses `"additionalProperties": true` throughout. This means:
