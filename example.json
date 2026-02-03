@@ -1,166 +1,166 @@
 {
-  "name": "ABC Telecom Interconnect",
-  "description": "ABC Telecom provides international voice termination services.",
-  "version": "1.0",
-  "schema_version": "1.0.0",
-  "author": "ABC Telecom",
-  "website": "https://www.abctelecom.com",
-  "email": "rates@abctelecom.com",
-  "technical": "support@abctelecom.com",
-  "noc": "noc@abctelecom.com",
-  "billing": "billing@abctelecom.com",
-  "phone": "+1-555-123-4567",
-  "date": "2024-06-01",
-  "effective_date": "2024-06-01T00:00:00Z",
-  "expiry_date": "2024-12-31T23:59:59Z",
-  "timezone": "UTC",
+	"name": "ABC Telecom Interconnect",
+	"description": "ABC Telecom provides international voice termination services.",
+	"version": "1.0",
+	"schema_version": "1.0.0",
+	"author": "ABC Telecom",
+	"website": "https://www.abctelecom.com",
+	"email": "rates@abctelecom.com",
+	"technical": "support@abctelecom.com",
+	"noc": "noc@abctelecom.com",
+	"billing": "billing@abctelecom.com",
+	"phone": "+1-555-123-4567",
+	"date": "2024-06-01",
+	"effective_date": "2024-06-01T00:00:00Z",
+	"expiry_date": "2024-12-31T23:59:59Z",
+	"timezone": "UTC",
 
-  "legal": {
-    "terms_url": "https://www.abctelecom.com/terms",
-    "privacy_url": "https://www.abctelecom.com/privacy",
-    "jurisdiction": "US",
-    "dispute_resolution": "arbitration",
-    "liability_cap": 10000,
-    "indemnification": true
-  },
+	"legal": {
+		"terms_url": "https://www.abctelecom.com/terms",
+		"privacy_url": "https://www.abctelecom.com/privacy",
+		"jurisdiction": "US",
+		"dispute_resolution": "arbitration",
+		"liability_cap": 10000,
+		"indemnification": true
+	},
 
-  "endpoints": {
-    "default": {
-      "protocol": "sip",
-      "transport": "udp",
-      "host": "sip.abctelecom.com",
-      "port": 5060,
-      "username": "user",
-      "password": "pass"
-    }
-  },
+	"endpoints": {
+		"default": {
+			"protocol": "sip",
+			"transport": "udp",
+			"host": "sip.abctelecom.com",
+			"port": 5060,
+			"username": "user",
+			"password": "pass"
+		}
+	},
 
-  "cards": {
-    "default": {
-      "name": "Wholesale Voice Termination",
-      "description": "Outbound international voice termination.",
-      "type": "termination",
-      "direction": "outbound",
-      "traffic_type": "voice",
-      "service_type": "wholesale",
+	"cards": {
+		"default": {
+			"name": "Wholesale Voice Termination",
+			"description": "Outbound international voice termination.",
+			"type": "termination",
+			"direction": "outbound",
+			"traffic_type": "voice",
+			"service_type": "wholesale",
 
-      "currency": "USD",
-      "endpoint": "default",
+			"currency": "USD",
+			"endpoint": "default",
 
-      "fields": [
-        { "name": "prefix" },
-        { "name": "name" },
-        { "name": "rate" },
-        { "name": "connection_fee" },
-        { "name": "initial_interval" },
-        { "name": "billing_interval" },
-        { "name": "effective_date" },
-        { "name": "country_code" },
-        { "name": "region" },
-        { "name": "destination_type" },
-        { "name": "mcc" },
-        { "name": "mnc" },
-        { "name": "carrier" }
-      ],
+			"fields": [
+				{ "name": "prefix" },
+				{ "name": "name" },
+				{ "name": "rate" },
+				{ "name": "connection_fee" },
+				{ "name": "initial_interval" },
+				{ "name": "billing_interval" },
+				{ "name": "effective_date" },
+				{ "name": "country_code" },
+				{ "name": "region" },
+				{ "name": "destination_type" },
+				{ "name": "mcc" },
+				{ "name": "mnc" },
+				{ "name": "carrier" }
+			],
 
-      "rate_card": {
-        "uri": "https://rates.abctelecom.com/termination/us.json",
-        "format": "json",
-        "checksum": {
-          "algorithm": "sha256",
-          "value": "REPLACE_WITH_SHA256_OF_CANONICAL_RATE_CARD"
-        }
-      },
+			"rate_card": {
+				"uri": "https://rates.abctelecom.com/termination/us.json",
+				"format": "json",
+				"checksum": {
+					"algorithm": "sha256",
+					"value": "REPLACE_WITH_SHA256_OF_CANONICAL_RATE_CARD"
+				}
+			},
 
-      "rate": {
-        "precision": 4,
-        "rounding": "up",
-        "default_pulse": 60,
-        "default_initial": 60,
-        "connection": 0
-      },
+			"rate": {
+				"precision": 4,
+				"rounding": "up",
+				"default_pulse": 60,
+				"default_initial": 60,
+				"connection": 0
+			},
 
-      "charge": {
-        "precision": 4,
-        "rounding": "up"
-      },
+			"charge": {
+				"precision": 4,
+				"rounding": "up"
+			},
 
-      "criteria": [
-        { "acd": 60 },
-        { "asr": 90 },
-        { "pre_assert_id": "required" },
-        { "stir_shaken_attestation": "A" },
-        { "cli_required": true }
-      ],
+			"criteria": [
+				{ "acd": 60 },
+				{ "asr": 90 },
+				{ "pre_assert_id": "required" },
+				{ "stir_shaken_attestation": "A" },
+				{ "cli_required": true }
+			],
 
-      "performance": {
-        "ner": 100,
-        "uptime": 99.9,
-        "cps": 10,
-        "channels": 100,
-        "concurrent_calls": 100,
-        "pdd": 3,
-        "latency": 150,
-        "jitter": 30,
-        "packet_loss": 1,
-        "mos_min": 3.5,
-        "sla_response_time_minutes": 4
-      },
+			"performance": {
+				"ner": 100,
+				"uptime": 99.9,
+				"cps": 10,
+				"channels": 100,
+				"concurrent_calls": 100,
+				"pdd": 3,
+				"latency": 150,
+				"jitter": 30,
+				"packet_loss": 1,
+				"mos_min": 3.5,
+				"sla_response_time_minutes": 4
+			},
 
-      "codecs": [
-        "PCMU",
-        "PCMA",
-        "G729",
-        "G722",
-        "iLBC",
-        {
-          "name": "OPUS",
-          "min_bitrate": 16000,
-          "max_bitrate": 64000,
-          "channels": 2,
-          "ptime": 20
-        }
-      ],
+			"codecs": [
+				"PCMU",
+				"PCMA",
+				"G729",
+				"G722",
+				"iLBC",
+				{
+					"name": "OPUS",
+					"min_bitrate": 16000,
+					"max_bitrate": 64000,
+					"channels": 2,
+					"ptime": 20
+				}
+			],
 
-      "number_format": {
-        "src": { "e164": true },
-        "dst": { "e164": true }
-      }
-    }
-  },
+			"number_format": {
+				"src": { "e164": true },
+				"dst": { "e164": true }
+			}
+		}
+	},
 
-  "customer": {
-    "name": "XYZ Corp",
-    "account_id": "CUST-12345",
-    "contact_name": "John Doe",
-    "contact_email": "john.doe@xyzcorp.com",
-    "contact_phone": "+1-555-987-6543",
-    "billing_email": "billing@xyzcorp.com",
-    "technical_email": "tech@xyzcorp.com",
-    "address": {
-      "street": "123 Main Street",
-      "city": "New York",
-      "state": "NY",
-      "postal_code": "10001",
-      "country": "US"
-    },
-    "tax_id": "12-3456789",
-    "customer_type": "carrier"
-  },
+	"customer": {
+		"name": "XYZ Corp",
+		"account_id": "CUST-12345",
+		"contact_name": "John Doe",
+		"contact_email": "john.doe@xyzcorp.com",
+		"contact_phone": "+1-555-987-6543",
+		"billing_email": "billing@xyzcorp.com",
+		"technical_email": "tech@xyzcorp.com",
+		"address": {
+			"street": "123 Main Street",
+			"city": "New York",
+			"state": "NY",
+			"postal_code": "10001",
+			"country": "US"
+		},
+		"tax_id": "12-3456789",
+		"customer_type": "carrier"
+	},
 
-  "metadata": {
-    "created_at": "2024-06-01T00:00:00Z",
-    "updated_at": "2024-06-01T00:00:00Z",
-    "created_by": "admin@abctelecom.com",
-    "canonicalization": "RFC8785",
-    "checksum": {
-      "algorithm": "sha256",
-      "value": "REPLACE_WITH_SHA256_OF_CANONICAL_DOCUMENT"
-    },
-    "signature": {
-      "algorithm": "ed25519",
-      "value": "REPLACE_WITH_BASE64_SIGNATURE_OF_CHECKSUM"
-    },
-    "notes": "Initial signed interconnect release"
-  }
+	"metadata": {
+		"created_at": "2024-06-01T00:00:00Z",
+		"updated_at": "2024-06-01T00:00:00Z",
+		"created_by": "admin@abctelecom.com",
+		"canonicalization": "RFC8785",
+		"checksum": {
+			"algorithm": "sha256",
+			"value": "REPLACE_WITH_SHA256_OF_CANONICAL_DOCUMENT"
+		},
+		"signature": {
+			"algorithm": "ed25519",
+			"value": "REPLACE_WITH_BASE64_SIGNATURE_OF_CHECKSUM"
+		},
+		"notes": "Initial signed interconnect release"
+	}
 }
